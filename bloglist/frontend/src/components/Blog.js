@@ -5,6 +5,9 @@ import { deleteBlog, updateBlog } from '../reducers/blogsReducer'
 import { notify } from '../reducers/notificationReducer'
 import { getLoggedInUser } from '../reducers/userReducer'
 
+import CommentSection from './CommentSection'
+
+
 const Blog = ({ blog }) => {
   const dispatch = useDispatch()
   const user = useSelector(getLoggedInUser)
@@ -62,6 +65,7 @@ const Blog = ({ blog }) => {
         <div>added by {addedBy}</div>
         {own && <button onClick={removeBlog}>remove</button>}
       </div>
+      <CommentSection blog={blog}/>
     </div>
   )
 }

@@ -41,6 +41,15 @@ export const deleteBlog = createAsyncThunk(
   }
 )
 
+export const postComment = createAsyncThunk(
+  'blogs/postComment',
+  async (args) => {
+    const { id, comment } = args
+    const response = await blogService.addComment(id, comment)
+    return response
+  }
+)
+
 const initialState = []
 
 const blogSlice = createSlice({
@@ -63,6 +72,11 @@ const blogSlice = createSlice({
         return state
           .map((blog) => (blog.id === id ? action.payload : blog))
           .sort(byLikes)
+      })
+      .addCase(postComment.fulfilled, (state, action) => {
+        return state.map((blog) =>
+          blog.id === action.payload.id ? action.payload : blog
+        )
       })
   }
 })
