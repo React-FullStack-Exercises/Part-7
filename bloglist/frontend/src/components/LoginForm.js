@@ -1,36 +1,50 @@
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
-import PropTypes from 'prop-types'
+import { notify } from '../reducers/notificationReducer'
+import { userLoggedIn } from '../reducers/userReducer'
+import loginService from '../services/login'
 
-const LoginForm = ({
-  handleSubmit,
-  handleUsernameChange,
-  handlePasswordChange,
-  username,
-  password
-}) => {
+const LoginForm = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    loginService
+      .login({
+        username,
+        password,
+      })
+      .then((user) => {
+        dispatch(userLoggedIn(user))
+        navigate('/')
+        dispatch(notify(`${user.name} logged in`, 'success'))
+      })
+      .catch(() => {
+        dispatch(notify('Wrong username or password', 'error'))
+      })
+  }
+
   return (
     <div>
       <h2>Login</h2>
 
       <form onSubmit={handleSubmit}>
         <div>
-          username <input id='username' type='text' value={username} name='Username' onChange={handleUsernameChange} />
+          username <input id='username' type='text' value={username} name='Username' onChange={(event) => setUsername(event.target.value)} />
         </div>
         <div>
-          password <input id='password' type='password' value={password} name='Password' onChange={handlePasswordChange} />
+          password <input id='password' type='password' value={password} name='Password' onChange={(event) => setPassword(event.target.value)} />
         </div>
         <button id='login-button' type='submit'>login</button>
       </form>
     </div>
   )
-}
-
-LoginForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleUsernameChange: PropTypes.func.isRequired,
-  handlePasswordChange: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
 }
 
 export default LoginForm

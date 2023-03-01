@@ -1,12 +1,13 @@
 const config = require('./utils/config')
 const express = require('express')
-require('express-async-errors')
 const app = express()
 const cors = require('cors')
+require('express-async-errors')
+
 const loginRouter = require('./controllers/login')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
-const middleware = require('./utils/middleware')
+const { errorHandler, tokenExtractor, userExtractor, requestLogger, unknownEndpoint } = require('./utils/middleware')
 const logger = require('./utils/logger')
 
 const mongoose = require('mongoose')
@@ -24,12 +25,10 @@ app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
 
-app.use(middleware.requestLogger)
-app.use(middleware.tokenExtractor)
-app.use(middleware.userExtractor)
+app.use(requestLogger)
 
 app.use('/api/login', loginRouter)
-app.use('/api/blogs', blogsRouter)
+app.use('/api/blogs', tokenExtractor, userExtractor, blogsRouter)
 app.use('/api/users', usersRouter)
 
 if(process.env.NODE_ENV === 'test') {
@@ -37,7 +36,7 @@ if(process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRouter)
 }
 
-app.use(middleware.unknownEndpoint)
-app.use(middleware.errorHandler)
+app.use(unknownEndpoint)
+app.use(errorHandler)
 
 module.exports = app

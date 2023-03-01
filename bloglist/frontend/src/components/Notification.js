@@ -15,7 +15,7 @@ const Notification = () => {
         {message}
       </div>
     )
-  } else if(type === 'success') {
+  } else {
     return (
       <div className="success">
         {message}

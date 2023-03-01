@@ -41,13 +41,26 @@ usersRouter.post('/', async (request, response) => {
 // GET
 usersRouter.get('/', async (request, response) => {
   const users = await User
-    .find({}).populate('blogs', { url:1, title:1, author:1 })
+    .find({}).populate('blogs', {
+      url:1,
+      title:1,
+      author:1 
+    })
 
   response.json(users)
 })
+
 usersRouter.get('/:id', async (request, response) => {
   const id  = request.params.id
-  const user = await User.findById({ id })
+  const user = await User.findById({ id }).populate('blogs', {
+    author: 1,
+    title: 1,
+    url: 1,
+    likes: 1
+  })
   response.json(user)
 })
+
+
+
 module.exports = usersRouter

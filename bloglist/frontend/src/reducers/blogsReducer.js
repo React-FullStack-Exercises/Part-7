@@ -20,7 +20,6 @@ export const createBlog = createAsyncThunk(
       const createdBlog = await blogService.create(newBlog)
       return createdBlog
     } catch (error) {
-      console.log(error)
       throw new Error(error.response.data.error)
     }
   }
