@@ -1,27 +1,21 @@
 import { useSelector } from 'react-redux'
 
+import { Alert } from '@mui/material'
+
 const Notification = () => {
   const notification = useSelector((state) => state.notification)
+
   if (notification === null) {
     return null
   }
 
-  const type = notification.type
-  const message = notification.message
+  const type = notification.type === 'error' ? 'error' : 'success'
 
-  if (type === 'error') {
-    return (
-      <div className="error">
-        {message}
-      </div>
-    )
-  } else {
-    return (
-      <div className="success">
-        {message}
-      </div>
-    )
-  }
+  return (
+    <Alert align='center' sx={{ maxWidth: 700 }} item xs={8} md={8}  id='notification' severity={type}>
+      {notification.message}
+    </Alert>
+  )
 }
 
 export default Notification

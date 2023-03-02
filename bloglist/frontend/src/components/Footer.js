@@ -1,3 +1,7 @@
+import {
+  Box
+} from '@mui/material'
+
 const Footer = () => {
   const footerStyle = {
     color: 'green',
@@ -5,10 +9,10 @@ const Footer = () => {
     fontSize: 16
   }
   return (
-    <div style={footerStyle}>
+    <Box style={footerStyle} align='center'>
       <br />
-      <em>Blog app, Department of Computer Science, University of Helsinki 2022</em>
-    </div>
+      <em>Blog app by Keshab Manni, Department of Computer Science, University of Helsinki 2023</em>
+    </Box>
   )
 }
 

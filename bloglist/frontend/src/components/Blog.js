@@ -1,4 +1,3 @@
-
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { deleteBlog, updateBlog } from '../reducers/blogsReducer'
@@ -7,6 +6,7 @@ import { getLoggedInUser } from '../reducers/userReducer'
 
 import CommentSection from './CommentSection'
 
+import { Paper, Button, Typography, Container, Divider } from '@mui/material'
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch()
@@ -45,28 +45,32 @@ const Blog = ({ blog }) => {
   const addedBy = blog.user && blog.user.name ? blog.user.name : 'anonymous'
   const own = blog.user && user.username === blog.user.username
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 2,
-    marginBottom: 5,
-  }
+  // const blogStyle = {
+  //   padding: 10,
+  //   border: 'solid',
+  //   borderWidth: 2,
+  //   marginBottom: 5,
+  // }
 
   return (
-    <div style={blogStyle} className='blog'>
-      <div>
-        <h2>{blog.title}, by {blog.author}</h2>
-        <a href={blog.url}>{blog.url}</a>
-        <div>
+    <Paper variant='outlined' className='blog'>
+      <Container sx={{ m: 3 }}>
+        <Typography variant='h5'>
+          {blog.title}, by {blog.author}
+        </Typography>
+        <Typography>
+          <a href={blog.url}>{blog.url}</a>
+        </Typography>
+        <Typography>
           likes {blog.likes}
-          <button onClick={likeBlog}>like</button>
-        </div>
-        <div>added by {addedBy}</div>
-        {own && <button onClick={removeBlog}>remove</button>}
-      </div>
-      <CommentSection blog={blog}/>
-    </div>
+        </Typography>
+        <Typography>added by {addedBy}</Typography>
+        <Button sx={{ mr: 2, mt:2 }} disableElevation={true} variant='contained' color='primary' onClick={likeBlog}>like</Button>
+        {own && <Button sx={{ mt:2 }} disableElevation={true} variant='contained' color='error' onClick={removeBlog}>remove</Button>}
+      </Container>
+      <Divider />
+      <CommentSection blog={blog} />
+    </Paper>
   )
 }
 export default Blog

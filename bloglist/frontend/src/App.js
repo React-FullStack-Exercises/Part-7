@@ -1,13 +1,8 @@
-
 import { useSelector } from 'react-redux'
 import { Navigate, Route, Routes, useMatch } from 'react-router-dom'
-
-import {
-  selectAllBlogs,
-} from './reducers/blogsReducer'
-import {
-  getLoggedInUser,
-} from './reducers/userReducer'
+import { Box, Container } from '@mui/material'
+import { selectAllBlogs } from './reducers/blogsReducer'
+import { getLoggedInUser } from './reducers/userReducer'
 import { getAllUsers } from './reducers/usersReducer'
 
 import Header from './components/Header'
@@ -35,50 +30,53 @@ const App = () => {
     ? blogs.find((blog) => blog.id === blogMatch.params.id)
     : null
 
-
   return (
-    <div>
-      <NavigationBar />
+    <Box>
       <Header />
-      <Routes>
-        <Route
-          path='/'
-          element={loggedInUser ? <Home /> : <Navigate to='/login' replace />}
-        />
-        <Route
-          path='/login'
-          element={!loggedInUser ? <LoginForm /> : <Navigate to='/' replace />}
-        />
-        <Route
-          path='/users'
-          element={
-            loggedInUser ? <UserList /> : <Navigate to='/login' replace />
-          }
-        />
-        <Route
-          path='/users/:id'
-          element={
-            loggedInUser ? (
-              <User user={user} />
-            ) : (
-              <Navigate to={'/login'} replace />
-            )
-          }
-        />
-        <Route path='/blogs' element={<Navigate to={'/'} replace />} />
-        <Route
-          path='/blogs/:id'
-          element={
-            loggedInUser ? (
-              <Blog blog={blog} />
-            ) : (
-              <Navigate to='/login' replace />
-            )
-          }
-        />
-      </Routes>
+      <NavigationBar />
+      <Container>
+        <Routes>
+          <Route
+            path='/'
+            element={loggedInUser ? <Home /> : <Navigate to='/login' replace />}
+          />
+          <Route
+            path='/login'
+            element={
+              !loggedInUser ? <LoginForm /> : <Navigate to='/' replace />
+            }
+          />
+          <Route
+            path='/users'
+            element={
+              loggedInUser ? <UserList /> : <Navigate to='/login' replace />
+            }
+          />
+          <Route
+            path='/users/:id'
+            element={
+              loggedInUser ? (
+                <User user={user} />
+              ) : (
+                <Navigate to={'/login'} replace />
+              )
+            }
+          />
+          <Route path='/blogs' element={<Navigate to={'/'} replace />} />
+          <Route
+            path='/blogs/:id'
+            element={
+              loggedInUser ? (
+                <Blog blog={blog} />
+              ) : (
+                <Navigate to='/login' replace />
+              )
+            }
+          />
+        </Routes>
+      </Container>
       <Footer />
-    </div>
+    </Box>
   )
 }
 

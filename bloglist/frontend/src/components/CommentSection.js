@@ -1,7 +1,20 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { postComment } from '../reducers/blogsReducer';
-import { notify } from '../reducers/notificationReducer';
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { postComment } from '../reducers/blogsReducer'
+import { notify } from '../reducers/notificationReducer'
+
+import {
+  Typography,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Container,
+} from '@mui/material'
+
+import CommentIcon from '@mui/icons-material/Comment'
 
 const CommentSection = ({ blog }) => {
   const dispatch = useDispatch()
@@ -9,7 +22,7 @@ const CommentSection = ({ blog }) => {
 
   const addComment = (event) => {
     event.preventDefault()
-    if(blog.comments.some((c) => c === comment)) {
+    if (blog.comments.some((c) => c === comment)) {
       dispatch(notify('Someone has already posted this comment', 'error'))
     } else {
       dispatch(postComment({ id: blog.id, comment }))
@@ -19,26 +32,34 @@ const CommentSection = ({ blog }) => {
   }
 
   return (
-    <div>
-      <h3>Comments</h3>
+    <Container sx={{ p: 2 }}>
+      <Typography variant='h6'>Comments</Typography>
       <form onSubmit={addComment}>
-        <input
+        <TextField
           type='text'
           value={comment}
+          placeholder='Type your comment here...'
+          label='comment'
           onChange={(event) => setComment(event.target.value)}
+          size='small'
+          sx={{ maxWidth: 400, mr: 1 }}
         />
-        <button>add comment</button>
+        <Button size='large' type='submit' variant='outlined' color='primary'>
+          add
+        </Button>
       </form>
-      <ul>
-        {
-          blog.comments.map((comment) => (
-            <li key={comment}>{comment}</li>
-          ))
-        }
-      </ul>
-    </div>
+      <List>
+        {blog.comments.map((comment) => (
+          <ListItem key={comment}>
+            <ListItemIcon>
+              <CommentIcon />
+            </ListItemIcon>
+            <ListItemText primary={comment}/>
+          </ListItem>
+        ))}
+      </List>
+    </Container>
   )
-
 }
 
 export default CommentSection

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -5,6 +6,19 @@ import { useNavigate } from 'react-router-dom'
 import { notify } from '../reducers/notificationReducer'
 import { userLoggedIn } from '../reducers/userReducer'
 import loginService from '../services/login'
+
+import Header from './Header'
+
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  Container,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
@@ -31,19 +45,55 @@ const LoginForm = () => {
   }
 
   return (
-    <div>
-      <h2>Login</h2>
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          username <input id='username' type='text' value={username} name='Username' onChange={(event) => setUsername(event.target.value)} />
-        </div>
-        <div>
-          password <input id='password' type='password' value={password} name='Password' onChange={(event) => setPassword(event.target.value)} />
-        </div>
-        <button id='login-button' type='submit'>login</button>
-      </form>
-    </div>
+    <Box pt={15} maxWidth={500} m='auto'>
+      <Card>
+        <Typography className='appName' variant='h3' align='center' pt={5}>
+          Blog App
+        </Typography>
+        <CardContent>
+          <Grid container spacing={3}>
+            <Grid xs={12} item>
+              <TextField
+                id='username'
+                type='text'
+                value={username}
+                label='Username'
+                placeholder='Enter username...'
+                variant='outlined'
+                fullWidth
+                required
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            </Grid>
+            <Grid xs={12} item>
+              <TextField
+                id='password'
+                type='password'
+                value={password}
+                label='Password'
+                placeholder='Enter password...'
+                variant='outlined'
+                fullWidth
+                required
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </Grid>
+            <Grid xs={12} item>
+              <Button
+                id='create-button'
+                type='submit'
+                variant='contained'
+                color='primary'
+                onClick={handleSubmit}
+                fullWidth
+              >
+                Login
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </Box>
   )
 }
 
